@@ -1,33 +1,33 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useRef, useState } from "react";
+import './MealItemForm.css'
 import Input from "../../UI/Input";
 
-const Form = styled.form`
-  text-align: right;
-  button {
-    font: inherit;
-    cursor: pointer;
-    background-color: #8a2b06;
-    border: 1px solid #8a2b06;
-    color: white;
-    padding: 0.25rem 2rem;
-    border-radius: 20px;
-    font-weight: bold;
-  }
-  button:hover,
-  button:active {
-    background-color: #641e03;
-    border-color: #641e03;
-  }
-`;
 
 function MealItemForm(props) {
+  const amountInputRef = useRef();
+  const [amountIsValid, setAmountIsValid] = useState(true);
+  const submitHandler = (event) => {
+    event.preventDefault();
+    const enteredAmount = amountInputRef.current.value;
+    const enteredAmountNumber = +enteredAmount;
+    if (
+      enteredAmount.trim().length === 0 ||
+      enteredAmountNumber < 1 ||
+      enteredAmount > 5
+    ) {
+      setAmountIsValid(false);
+      return;
+    }
+    //console.log(enteredAmountNumber)
+    props.onAddToCart(enteredAmountNumber);
+  };
   return (
-    <Form className="form">
+    <form className="form" onSubmit={submitHandler}>
       <Input
+        ref={amountInputRef}
         label="Amount"
         input={{
-          id: "amount" + props.id,
+          id: "amount_" + props.id,
           type: "number",
           min: "1",
           max: "5",
@@ -36,7 +36,8 @@ function MealItemForm(props) {
         }}
       />
       <button>+ Add </button>
-    </Form>
+      {!amountIsValid && <p>Please enter a valid amount (1-5).</p>}
+    </form>
   );
 }
 

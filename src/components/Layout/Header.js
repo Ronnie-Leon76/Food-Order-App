@@ -37,7 +37,7 @@ function Header(props) {
     <React.Fragment>
       <HeaderComponent>
         <h1>ReactMeals</h1>
-        <HeaderCartButton>Cart</HeaderCartButton>
+        <HeaderCartButton onClick={props.onShowCart}>Cart</HeaderCartButton>
       </HeaderComponent>
       <MainImageDiv>
         <img src={mealsImage} alt="A table full of delicious meals" />
